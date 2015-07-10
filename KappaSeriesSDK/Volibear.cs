@@ -124,12 +124,10 @@ namespace KappaSeriesSDK
 
        private static void Game_OnUpdate(EventArgs args)
        {
-           /*   Till DamageLib is done.
-            * 
-            * if (_cfg["KillSteal"]["SmartKS"].GetValue<MenuBool>().Value)
+            if (_cfg["KillSteal"]["SmartKS"].GetValue<MenuBool>().Value)
            {
                Smartks();
-           }*/
+           }
            
 
            switch (Orbwalker.ActiveMode)
