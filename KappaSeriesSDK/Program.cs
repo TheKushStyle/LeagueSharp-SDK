@@ -22,9 +22,17 @@ namespace KappaSeriesSDK
                 //var def = ("Kappa Series Doesn't Support : ");
                 switch (cs)
                 {
+                    case "Aatrox":
+                        Console.WriteLine("Aatrox loaded");
+                        new Aatrox();
+                        break;
+
                     case "Volibear":
                         new Volibear();
                         break;
+
+                    
+
                 }
             }
             catch (Exception exception)

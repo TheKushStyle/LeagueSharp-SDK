@@ -9,6 +9,7 @@ using LeagueSharp.SDK.Core.Extensions;
 using LeagueSharp.SDK.Core.UI.IMenu.Values;
 using LeagueSharp.SDK.Core.Wrappers;
 using SharpDX;
+using Color = System.Drawing.Color;
 using Menu = LeagueSharp.SDK.Core.UI.IMenu.Menu;
 
 namespace KappaSeriesSDK
@@ -175,7 +176,6 @@ namespace KappaSeriesSDK
        private static void JungleClear()
        {
            var jungleMonster = GameObjects.JungleLarge.Where(i => (_player.Distance(i) <= _w.Range)).ToList();
-
            if (_cfg["JungleClear"]["UseQJungle"].GetValue<MenuBool>().Value && _q.IsReady())
            {
                _q.Cast();
@@ -196,7 +196,7 @@ namespace KappaSeriesSDK
        {
            var minion = GameObjects.EnemyMinions.Where(min => min.IsValid && min.Distance(_player) < _w.Range).ToList();
 
-           if (_cfg["LaneClear"]["UseQJungle"].GetValue<MenuBool>().Value && _q.IsReady())
+           if (_cfg["LaneClear"]["UseQLane"].GetValue<MenuBool>().Value && _q.IsReady())
            {
                _q.Cast();
            }
@@ -217,17 +217,17 @@ namespace KappaSeriesSDK
            foreach (
                var t in ObjectManager.Get<Obj_AI_Hero>().Where(t => t.IsEnemy).Where(t => t.IsValidTarget(_w.Range)))
            {
-               if (t.Health <= Damage.GetSpellDamage(_player, t, SpellSlot.W) && _w.IsReady() && _player.Distance(t) <= _w.Range && t.IsValidTarget())
+               if (t.Health <= _player.GetSpellDamage(t, SpellSlot.W) && _w.IsReady() && _player.Distance(t) <= _w.Range && t.IsValidTarget())
                {
                    _w.Cast(t);
                }
 
-               if (t.Health <= Damage.GetSpellDamage(_player, t, SpellSlot.E) && _e.IsReady() && _player.Distance(t) <= _e.Range && t.IsValidTarget())
+               if (t.Health <= _player.GetSpellDamage(t, SpellSlot.E) && _e.IsReady() && _player.Distance(t) <= _e.Range && t.IsValidTarget())
                {
                    _e.Cast();
                }
 
-               else if (t.Health <= (Damage.GetSpellDamage(_player, t, SpellSlot.W) + Damage.GetSpellDamage(_player, t, SpellSlot.E)) && _e.IsReady() && _w.IsReady() && t.IsValidTarget())
+               else if (t.Health <= (_player.GetSpellDamage(t, SpellSlot.W) + _player.GetSpellDamage(t, SpellSlot.E)) && _e.IsReady() && _w.IsReady() && t.IsValidTarget())
                {
                    _w.Cast(t);
                    _e.Cast();
@@ -278,22 +278,22 @@ namespace KappaSeriesSDK
        {
            if (_cfg["Drawings"]["DrawQ"].GetValue<MenuBool>().Value)
                {
-                   Drawing.DrawCircle(_player.Position,_q.Range, System.Drawing.Color.BlueViolet);
+                   Drawing.DrawCircle(_player.Position,_q.Range, Color.BlueViolet);
                }
 
            if (_cfg["Drawings"]["DrawW"].GetValue<MenuBool>().Value)
            {
-               Drawing.DrawCircle(_player.Position,_w.Range, System.Drawing.Color.Blue);
+               Drawing.DrawCircle(_player.Position,_w.Range, Color.Blue);
            }
 
            if (_cfg["Drawings"]["DrawE"].GetValue<MenuBool>().Value)
            {
-               Drawing.DrawCircle(_player.Position,_e.Range, System.Drawing.Color.DarkGoldenrod);
+               Drawing.DrawCircle(_player.Position,_e.Range, Color.DarkGoldenrod);
            }
 
            if (_cfg["Drawings"]["DrawR"].GetValue<MenuBool>().Value)
            {
-               Drawing.DrawCircle(_player.Position,_w.Range, System.Drawing.Color.DarkMagenta);
+               Drawing.DrawCircle(_player.Position,_w.Range, Color.DarkMagenta);
            }
 
            }
